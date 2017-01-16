@@ -1,1 +1,26 @@
+<h1><%= @post.title %></h1>
+<p><%= @post.content %></p>
+comments:
+<ul>
+<% @post.try(:comments).each do |c| %>
+  <% if c.id != nil %>
+  <li><%= link_to c.user.try(:username), user_path(c.user) %> says:<%= c.content %></li>
+<% end %>
+<% end %>
+</ul>
 
+users commented on this post:
+<ul>
+<% @post.try(:users).each do |u| %>
+<% if u.id !=nil %>
+  <li><%= link_to u.username, user_path(u) %></li>
+<% end %>
+<% end %>
+</ul>
+
+<h3>add comment</h3>
+<%= form_for @comment do |f| %>
+  <%= f.text_area :content %><br>
+  <%= f.collection_select :user_id, User.all, :id, :username, { include_blank: 'none' }%></br>
+  <%= f.submit %>
+<% end %>
