@@ -1,10 +1,10 @@
 class PostsController < ApplicationController
   def show
     @post = Post.find(params[:id])
-    @users = @post.comments.select(DISTINCT user_id).map {|x| x.user}
+    @users = @post.comments.select(:user_id).distinct.map {|x| x.user}
     @comment = @post.comments.build
     @comment.user=User.new
-   #@users = @post.comments.map(&:user) & @post.comments.map(&:user)
+   
   end
 
   def index
