@@ -1,26 +1,40 @@
-<h1><%= @post.title %></h1>
-<p><%= @post.content %></p>
-comments:
+<h1><%=@post.title%></h1></br>
+<p><%=@post.content%></p>
+
+<% users = [] %>
+
+<p>comments </p>
 <ul>
-<% @post.try(:comments).each do |c| %>
-  <% if c.id != nil %>
-  <li><%= link_to c.user.try(:username), user_path(c.user) %> says:<%= c.content %></li>
-<% end %>
-<% end %>
+	<% @post.try(:comments).each do |comment| %>
+	<%if comment.id !=nil%>
+		<li><%= link_to comment.user.username, user_path(comment.user)  %> says: <%= comment.content %></li>
+		<% end %>
+	<% end %>
+</ul>
+<h3>Users commented on this post</h3>
+<ul>
+	<% @users.each do |user| %>
+	   <%if user%>
+		<li><%= link_to user.username , user_path(user) %></li>
+		<% end %>
+	<% end %>
 </ul>
 
-users commented on this post:
 <ul>
-<% @post.try(:users).each do |u| %>
-<% if u.id !=nil %>
-  <li><%= link_to u.username, user_path(u) %></li>
-<% end %>
-<% end %>
+	<% @post.try(:categories).each do |cat| %>
+		<li><%= cat.name%></li>
+	<% end %>
 </ul>
+<p>comment on this post</p>
+<%=form_for @comment do |f|%>
+<%= f.text_area :content %></br>
+<%= f.collection_select :user_id,User.all,:id,:username ,{ include_blank: 'none' }%></br>
 
-<h3>add comment</h3>
-<%= form_for @comment do |f| %>
-  <%= f.text_area :content %><br>
-  <%= f.collection_select :user_id, User.all, :id, :username, { include_blank: 'none' }%></br>
-  <%= f.submit %>
-<% end %>
+<p>Create new Account </p>
+<%= f.fields_for :user , @comment.user=User.new do |u| %>
+   UserName : <%= u.text_field :username %></br>
+<%end%>
+<%= f.hidden_field :post_id, value: @post.id %>
+
+<%= f.submit%>
+<%end%>

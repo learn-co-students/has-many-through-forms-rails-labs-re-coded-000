@@ -1,7 +1,8 @@
-<h1><%= @category.name %></h1>
-<h2>category's posts:</h2>
+<h1><%=@category.name%></h1></br>
+<h3>Category's Posts</h3></br>
 <ol>
-  <% @category.posts.each do |post| %>
-  <li><%= link_to post.title, post_path(post)%></li>
-  <% end %>
+	<%=@category.posts.each do |p|%>
+		<li> <%= link_to p.title, post_path(p) %></li>
+	<%end%>
+
 </ol>
