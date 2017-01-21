@@ -1,10 +1,9 @@
 class PostsController < ApplicationController
   def show
     @post = Post.find(params[:id])
-    @users = @post.comments.select(:user_id).distinct.map {|x| x.user}
-    @comment = @post.comments.build
-    @comment.user=User.new
-   
+   @comment=@post.comments.build
+   @comment.user=User.new
+   @users = User.joins(:comments).includes(:comments).where(:comments => {post_id: @post.id}).distinct
   end
 
   def index
