@@ -5,7 +5,7 @@
 <ul>
 	<% @post.try(:comments).each do |comment| %>
 	<%if comment.id !=nil%>
-		<li><%= link_to comment.user.username, user_path(comment.user)  %> says: <%= comment.content %></li>
+		<li><%= comment.user.username%> says: <%= comment.content %></li>
 		<% end %>
 	<% end %>
 </ul>
